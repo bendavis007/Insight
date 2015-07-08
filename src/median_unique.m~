@@ -1,0 +1,20 @@
+fid = fopen('tweet_input/tweets.txt'); %open file
+s=textscan(fid,'%s','Delimiter','\r'); %delimit by strings and returns
+fclose(fid); %close dile
+str=s{:}; %save cells as string
+N = size(str,1); %identify number of tweets
+num = zeros(N,1); %initialize variable
+med = zeros(N,1); %initialize variable
+for i=1:N %for loop to scan each tweet individually
+    read = textscan(char(str(i)),'%s'); %scan tweet for strings
+    tweet = read{:}; %save cell data as string
+    [ii,jj,kk]=unique(tweet); %ident
+    freq=hist(kk,(1:numel(jj))')';
+    num(i) = size(freq,1);
+    med(i) = median(num(1:i));
+end
+txt = fopen('tweet_output/ft2.txt','wt');
+for j=1:N
+    fprintf(txt,'%.2f\n',med(j));
+end
+fclose(txt);
